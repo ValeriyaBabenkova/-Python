@@ -28,6 +28,8 @@ class Programmer:
             self.grade = self.grade.replace('Junior', 'Middle')
         elif self.grade == 'Middle':
             self.grade = self.grade.replace('Middle', 'Senior')
+        else:
+            self.money_info['Senior'] += 1
 
 
 
@@ -48,5 +50,3 @@ print(programmer.info())
 programmer.rise()
 programmer.work(250)
 print(programmer.info())
-
-
