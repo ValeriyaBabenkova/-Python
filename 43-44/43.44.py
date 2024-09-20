@@ -7,7 +7,6 @@ class Programmer:
         self.money = 0
         self.money_info = {'Junior': 10, 'Middle': 15, 'Senior': 20}
 
-
     def work(self, time):
         if self.grade == 'Junior':
             self.hours += time
@@ -22,7 +21,6 @@ class Programmer:
             money = self.money_info['Senior']
             self.money += time * money
 
-
     def rise(self):
         if self.grade == 'Junior':
             self.grade = self.grade.replace('Junior', 'Middle')
@@ -31,14 +29,11 @@ class Programmer:
         else:
             self.money_info['Senior'] += 1
 
-
-
     def info(self):
-        print(f'{self.name} {self.hours} {self.money}тгр.')
-
-
+        return (f'{self.name} {self.hours} {self.money}тгр.')
 
 programmer = Programmer('Васильев Иван', 'Junior')
+
 programmer.work(750)
 print(programmer.info())
 programmer.rise()
@@ -49,4 +44,9 @@ programmer.work(250)
 print(programmer.info())
 programmer.rise()
 programmer.work(250)
+print(programmer.info())
+programmer.rise()
+programmer.rise()
+programmer.rise()
+programmer.work(157)
 print(programmer.info())
