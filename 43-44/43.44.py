@@ -30,10 +30,9 @@ class Programmer:
             self.money_info['Senior'] += 1
 
     def info(self):
-        return (f'{self.name} {self.hours} {self.money}тгр.')
+        return f'{self.name} {self.hours} {self.money}тгр.'
 
-programmer = Programmer('Васильев Иван', 'Junior')
-
+programmer = (Programmer('Васильев Иван', 'Junior'))
 programmer.work(750)
 print(programmer.info())
 programmer.rise()
