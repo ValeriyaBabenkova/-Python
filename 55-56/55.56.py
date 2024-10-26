@@ -77,8 +77,8 @@ class YandexGPT:
         return text
 
 
-token = 'AQVN0KeGU3zaDpF2Xrl2CKpsnT6pSiYFL5cO4gdb'
-catalog = 'b1go5caidum290f08b6n'
+token = ''
+catalog = ''
 
 bot = YandexGPT(token, catalog)
 graphic_view = GraphicView(bot)
