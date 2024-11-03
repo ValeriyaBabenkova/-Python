@@ -1,0 +1,31 @@
+select fio, name from purchase join product
+on purchase.product_id = product.id
+join customer on purchase.customer_id = customer.id
+where customer.id = 3;
+
+select name from product;
+
+select fio, name from purchase join product
+on purchase.product_id = product.id
+join customer on purchase.customer_id = customer.id
+group by fio;
+ 
+select fio, name from purchase join product
+on purchase.product_id = product.id
+join customer on purchase.customer_id = customer.id
+where name = 'Ноутбук';
+
+select name, count(purchase.id) as count from purchase join product
+on purchase.product_id = product.id
+group by name;
+
+select name from purchase join product
+on purchase.product_id = product.id
+group by name;
+
+select fio, name, count(purchase.id) as count from purchase join product
+on purchase.product_id = product.id
+join customer
+on purchase.customer_id = customer.id
+group by name
+having count > 2;

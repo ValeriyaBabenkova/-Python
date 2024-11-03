@@ -1,0 +1,95 @@
+select name,
+	count(Trip.id) as count
+from Passenger
+	join Pass_in_trip on Passenger.id = Pass_in_trip.passenger
+	join Trip on Pass_in_trip.trip = Trip.id
+group by name
+order by count desc,
+	name
+
+
+
+select member_name,
+	status,
+	sum(amount * unit_price) as costs
+from Payments
+	join FamilyMembers on FamilyMembers.member_id = Payments.family_member
+where (
+		select YEAR(date)
+	) = 2005
+group by member_name,
+	status
+
+
+select member_name
+from FamilyMembers
+where birthday = (
+		select birthday
+		from FamilyMembers
+		order by birthday
+		LIMIT 1
+	)
+
+select status
+from FamilyMembers
+	join Payments on FamilyMembers.member_id = Payments.family_member
+	join Goods on Payments.good = Goods.good_id
+where good_id = 9
+group by status
+
+
+select status,
+	member_name,
+	sum(unit_price * amount) as costs
+from FamilyMembers
+	join Payments on FamilyMembers.member_id = Payments.family_member
+	join Goods on Payments.good = Goods.good_id
+	join GoodTypes on Goods.type = GoodTypes.good_type_id
+where good_type_id = 4
+group by status,
+	member_name
+
+
+select good_name
+from Goods
+	join Payments on Goods.good_id = Payments.good
+group by good_name
+having count(good) > 1
+
+
+select member_name
+from FamilyMembers
+where status = 'mother'
+
+
+select good_name,
+	unit_price
+from Goods
+	join Payments on Goods.good_id = Payments.good
+	join GoodTypes on GoodTypes.good_type_id = Goods.type
+where good_type_id = 3
+LIMIT 1
+
+
+select member_name,
+	sum(amount * unit_price) as costs
+from Payments
+	join FamilyMembers on FamilyMembers.member_id = Payments.family_member
+where (
+		select YEAR(date)
+	) = 2005
+	and (
+		select MONTH(date)
+	) = 06
+group by member_name
+
+
+
+select good_name
+from Goods
+where good_name not in (
+		select good_name
+		from Goods
+			left join Payments on Payments.good = Goods.good_id
+		where YEAR(date) = 2005
+	)
