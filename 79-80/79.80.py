@@ -20,6 +20,13 @@ class NoteModelSQL:
         cursor = self.connection.cursor()
         cursor.execute('select * from note where raiting > 3')
         return cursor.fetchall()
+
+    def get_user(self, name, password):
+        with self.connection as connection:
+            cursor = connection.cursor()
+            rows = cursor.execute("select * from users where name_user = ? and password = ? ", (name, password))
+            res = rows.fetchone()
+            return res
     @staticmethod
     def _dict_factory(cursor, row):
         d = {}
@@ -32,24 +39,33 @@ class NoteModelSQL:
         print('Закрытие подключения')
         self.connection.close()
 
+class User:
+    def __init__(self, name: str, password: str, db: NoteModelSQL):
+        self.name = name
+        self.password = password
+        self.db = db
+
+    def auth(self):
+        user = self.db.get_user(self.name, self.password)
+        if user:
+            print(user)
+            return user['id']
+        return None
+
+db = NoteModelSQL('notes.db')
+
 name = input('Введите имя: ')
 password = input('Введите пароль: ')
-
 auth = False
 
-sqlmodel = NoteModelSQL('notes.db')
+user_id = User(name, password, db).auth()
+print(user_id)
 
-connection = sqlite3.connect('notes.db')
-cursor = connection.cursor()
-rows = cursor.execute("select * from users where name_user = ? and password = ? ", (name, password))
-res = rows.fetchone()
-
-if res:
+if user_id:
     auth = True
-    user_id = res[0]
     print('Авторизация успешна')
 else:
-    print('Неверный логин или пароль')
+    print('неверный логин или пароль')
 
 while True and auth:
     print('Что хотите сделать?')
@@ -62,19 +78,19 @@ while True and auth:
     if res == '1':
         text = input('Введите название заметки: ')
         raiting = int(input('Введите рейтинг заметки: '))
-        sqlmodel.add_note(user_id,text, raiting)
+        db.add_note(user_id,text, raiting)
         print('Заметка добавлена!')
         print('\n')
 
     elif res == '2':
-        notes = sqlmodel.get_notes(user_id)
+        notes = db.get_notes(user_id)
         print('\n Список ваших заметок:')
         for note in notes:
             task_string = f'{note['id']}. {note['name']}. Рейтинг: {note['raiting']}'
             print(task_string)
 
     elif res == '3':
-        notes = sqlmodel.get_notes_popular()
+        notes = db.get_notes_popular()
         print('\n Список популярных заметок: ')
         for note in notes:
             task_string = f'{note['id']}. {note['name']}. Рейтинг: {note['raiting']}'
